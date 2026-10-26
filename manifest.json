@@ -1,0 +1,12 @@
+{
+  "manifest_version": 3,
+  "name": "Mod Header",
+  "version": "1.0.0",
+  "description": "Add or replace request headers on URLs you choose.",
+  "permissions": ["storage", "declarativeNetRequestWithHostAccess"],
+  "optional_host_permissions": ["http://*/*", "https://*/*"],
+  "action": {
+    "default_title": "Mod Header",
+    "default_popup": "popup.html"
+  }
+}

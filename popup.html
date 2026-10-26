@@ -1,0 +1,57 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Mod Header</title>
+    <link rel="stylesheet" href="popup.css">
+  </head>
+  <body>
+    <main class="app">
+      <header class="topbar">
+        <div class="brand-mark" aria-hidden="true">↗</div>
+        <div>
+          <h1>Mod Header</h1>
+          <p>Shape requests for your test environments.</p>
+        </div>
+      </header>
+
+      <form id="rule-form" class="rule-form">
+        <label for="url-pattern">URL pattern</label>
+        <input id="url-pattern" name="urlPattern" placeholder="https://qa.example.com/api/*" autocomplete="url" required>
+        <p class="hint">Use * as a wildcard. Example: https://qa.example.com/*</p>
+
+        <div class="field-row">
+          <div>
+            <label for="header-name">Header name</label>
+            <input id="header-name" name="headerName" placeholder="X-Environment" autocomplete="off" required>
+          </div>
+          <div>
+            <label for="header-value">Header value</label>
+            <input id="header-value" name="headerValue" placeholder="QA" autocomplete="off" required>
+          </div>
+        </div>
+
+        <button class="primary-button" id="submit-button" type="submit">Add rule <span aria-hidden="true">＋</span></button>
+        <button class="cancel-button" id="cancel-edit" type="button" hidden>Cancel edit</button>
+      </form>
+
+      <section class="rules-section" aria-labelledby="rules-heading">
+        <div class="section-heading">
+          <h2 id="rules-heading">Your rules</h2>
+          <span id="rule-count" class="count">0</span>
+        </div>
+        <div id="empty-state" class="empty-state">
+          <div class="empty-icon" aria-hidden="true">⌁</div>
+          <strong>No rules yet</strong>
+          <span>Add a rule to modify matching requests.</span>
+        </div>
+        <ul id="rules-list" class="rules-list" aria-live="polite"></ul>
+      </section>
+
+      <p id="status" class="status" role="status" aria-live="polite"></p>
+      <footer>Changes apply to outgoing requests.</footer>
+    </main>
+    <script src="popup.js"></script>
+  </body>
+</html>
