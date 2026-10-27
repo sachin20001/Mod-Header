@@ -5,6 +5,9 @@
   "description": "Add or replace request headers on URLs you choose.",
   "permissions": ["storage", "declarativeNetRequestWithHostAccess"],
   "optional_host_permissions": ["http://*/*", "https://*/*"],
+  "background": {
+    "service_worker": "service-worker.js"
+  },
   "action": {
     "default_title": "Mod Header",
     "default_popup": "popup.html"
