@@ -10,11 +10,12 @@ Mod Header is a Chrome Manifest V3 extension. You enter text to look for in a re
 
 Chrome reads [`manifest.json`](manifest.json) first when the extension is loaded. Its `action.default_popup` points to [`popup.html`](popup.html), which is the user interface entry point. The popup loads [`popup.css`](popup.css) for presentation and [`popup.js`](popup.js) for behavior.
 
-There is no background/service worker in this version. The popup calls Chrome's extension APIs directly. The browser's Declarative Net Request engine applies the registered rules to network traffic after the popup closes.
+The popup calls Chrome's extension APIs directly. [`service-worker.js`](service-worker.js) enables a per-tab match counter in Chrome's toolbar badge. The browser's Declarative Net Request engine applies the registered rules to network traffic after the popup closes.
 
 | File | Responsibility |
 | --- | --- |
 | [`manifest.json`](manifest.json) | Declares MV3, popup, storage and DNR permissions, and optional HTTP/HTTPS host access. |
+| [`service-worker.js`](service-worker.js) | Enables the DNR action count as a toolbar badge on install, startup, and worker load. |
 | [`popup.html`](popup.html) | Defines the rule form, dynamic header rows, empty state, rules table, status message, and script/style links. |
 | [`popup.css`](popup.css) | Styles the popup and rule cards. |
 | [`popup.js`](popup.js) | Validates input, requests host access, stores rules, updates DNR rules, and renders the UI. |
@@ -104,6 +105,10 @@ Each Chrome rule represents a URL term and all headers configured for that term.
 - An action of `modifyHeaders`, with operation `set` for each configured header.
 
 Chrome then applies matching rules to outgoing requests, whether they came from a page navigation, script, image, or API call. The request URL is what gets matched; it can differ from the URL in the address bar. The extension does not inspect response headers or response bodies.
+
+## Match transparency
+
+`service-worker.js` calls `chrome.declarativeNetRequest.setExtensionActionOptions({ displayActionCountAsBadgeText: true })`. Chrome displays a per-tab count on the extension's toolbar icon as requests match the rules. The popup explains what the badge means. This provides a quiet signal without opening a notification for every request, which could be noisy on pages that make many API calls. The DNR matched-rule debug event is restricted to unpacked extensions, so it is not used for the normal user-facing indicator.
 
 ## Permissions
 
