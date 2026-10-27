@@ -7,7 +7,7 @@
 }
 
 * { box-sizing: border-box; }
-body { width: 380px; min-height: 480px; margin: 0; background: #f7f8f5; }
+body { width: 440px; min-height: 480px; margin: 0; background: #f7f8f5; }
 .app { padding: 22px 22px 16px; }
 .topbar { display: flex; align-items: center; gap: 12px; margin-bottom: 22px; }
 .brand-mark { display: grid; place-items: center; width: 38px; height: 38px; border-radius: 12px; background: #d8f36b; color: #26330b; font-size: 23px; font-weight: 700; }
@@ -22,6 +22,15 @@ input:focus { border-color: #8aab33; box-shadow: 0 0 0 3px #d8f36b40; }
 .hint { margin: 6px 0 14px; color: #879089; font-size: 10px; }
 .field-row { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
 .field-row input { min-width: 0; }
+.headers-heading { display: flex; align-items: center; justify-content: space-between; margin-top: 14px; }
+.headers-heading label { margin-bottom: 6px; }
+.add-header-button { margin-bottom: 6px; padding: 3px 7px; border: 1px solid #dce5ca; border-radius: 6px; background: #f6f9ed; color: #4e6330; font: 600 10px 'DM Sans', sans-serif; cursor: pointer; }
+.add-header-button:hover { background: #edf4db; }
+.headers-list { display: grid; gap: 7px; }
+.header-row { display: grid; grid-template-columns: 1fr 1fr 25px; gap: 7px; align-items: center; }
+.header-row input { min-width: 0; }
+.remove-header-button { width: 25px; height: 30px; padding: 0; border: 0; border-radius: 6px; background: transparent; color: #9a6a60; font-size: 20px; line-height: 1; cursor: pointer; }
+.remove-header-button:hover { background: #f8eeeb; color: #a34739; }
 .primary-button { display: flex; justify-content: center; align-items: center; gap: 7px; width: 100%; height: 38px; margin-top: 16px; border: 0; border-radius: 8px; background: #253326; color: white; font: 700 12px 'DM Sans', sans-serif; cursor: pointer; transition: background .15s, transform .15s; }
 .primary-button:hover { background: #354a33; }
 .primary-button:active { transform: scale(.99); }
@@ -35,13 +44,20 @@ h2 { font: 800 13px 'Manrope', sans-serif; }
 .empty-state strong { color: #626e63; font-size: 11px; }
 .empty-state span { font-size: 10px; }
 .empty-icon { margin-bottom: 1px; color: #98a77a; font-size: 23px; line-height: 1; }
-.rules-list { display: grid; gap: 8px; margin: 0; padding: 0; list-style: none; max-height: 245px; overflow-y: auto; }
-.rule-card { padding: 11px 11px 10px; border: 1px solid #e5e9e1; border-radius: 11px; background: white; }
-.rule-top { display: flex; align-items: flex-start; justify-content: space-between; gap: 8px; }
-.rule-pattern { overflow-wrap: anywhere; color: #28352c; font: 600 11px 'DM Sans', sans-serif; line-height: 1.45; }
+.table-scroll { max-height: 280px; overflow: auto; border: 1px solid #e5e9e1; border-radius: 10px; background: #fff; }
+.rules-table { width: 100%; border-collapse: collapse; table-layout: fixed; }
+.rules-table th { position: sticky; top: 0; z-index: 1; padding: 8px 7px; background: #f3f5ef; color: #687368; text-align: left; font-size: 9px; font-weight: 700; }
+.rules-table th:first-child, .rules-table td:first-child { width: 42px; }
+.rules-table th:last-child, .rules-table td:last-child { width: 168px; }
+.rules-table td { padding: 9px 7px; border-top: 1px solid #eef0eb; vertical-align: middle; }
+.rule-id-cell { color: #65764a; font-size: 10px; font-weight: 700; }
+.rule-pattern { min-width: 0; overflow-wrap: anywhere; color: #28352c; font: 600 10px 'DM Sans', sans-serif; line-height: 1.4; }
+.rule-actions-cell { white-space: nowrap; }
 .rule-header { margin-top: 7px; color: #647065; font-size: 10px; overflow-wrap: anywhere; }
 .rule-header b { color: #27352c; font-weight: 700; }
-.rule-actions { display: flex; align-items: center; gap: 9px; margin-top: 10px; padding-top: 8px; border-top: 1px solid #f0f2ee; }
+.rule-details-row[hidden] { display: none; }
+.rule-details-cell { padding: 2px 10px 11px 56px !important; background: #fcfdfa; }
+.rule-actions { display: flex; align-items: center; justify-content: flex-end; gap: 8px; }
 .text-action { padding: 0; border: 0; background: none; color: #667467; font: 600 10px 'DM Sans', sans-serif; cursor: pointer; }
 .text-action:hover { color: #263a25; }
 .text-action.delete { margin-left: auto; color: #b45f52; }

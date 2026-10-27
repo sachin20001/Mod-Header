@@ -17,20 +17,15 @@
       </header>
 
       <form id="rule-form" class="rule-form">
-        <label for="url-pattern">URL pattern</label>
-        <input id="url-pattern" name="urlPattern" placeholder="https://qa.example.com/api/*" autocomplete="url" required>
-        <p class="hint">Use * as a wildcard. Example: https://qa.example.com/*</p>
+        <label for="url-contains">URL contains</label>
+        <input id="url-contains" name="urlContains" placeholder="qa.example.com/api" autocomplete="off" required>
+        <p class="hint">Matches request URLs containing this text, on any site. Chrome will ask for HTTP/HTTPS site access.</p>
 
-        <div class="field-row">
-          <div>
-            <label for="header-name">Header name</label>
-            <input id="header-name" name="headerName" placeholder="X-Environment" autocomplete="off" required>
-          </div>
-          <div>
-            <label for="header-value">Header value</label>
-            <input id="header-value" name="headerValue" placeholder="QA" autocomplete="off" required>
-          </div>
+        <div class="headers-heading">
+          <label>Request headers</label>
+          <button class="add-header-button" id="add-header" type="button" aria-label="Add another header">＋ Add header</button>
         </div>
+        <div id="headers-list" class="headers-list"></div>
 
         <button class="primary-button" id="submit-button" type="submit">Add rule <span aria-hidden="true">＋</span></button>
         <button class="cancel-button" id="cancel-edit" type="button" hidden>Cancel edit</button>
@@ -46,7 +41,12 @@
           <strong>No rules yet</strong>
           <span>Add a rule to modify matching requests.</span>
         </div>
-        <ul id="rules-list" class="rules-list" aria-live="polite"></ul>
+        <div id="rules-table-wrap" class="table-scroll">
+          <table class="rules-table" aria-label="Configured header rules">
+            <thead><tr><th scope="col">ID</th><th scope="col">URL contains</th><th scope="col">Actions</th></tr></thead>
+            <tbody id="rules-list" aria-live="polite"></tbody>
+          </table>
+        </div>
       </section>
 
       <p id="status" class="status" role="status" aria-live="polite"></p>
