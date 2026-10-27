@@ -1,6 +1,6 @@
 {
   "manifest_version": 3,
-  "name": "Mod Header",
+  "name": "Headerly",
   "version": "1.0.0",
   "description": "Add or replace request headers on URLs you choose.",
   "permissions": ["storage", "declarativeNetRequestWithHostAccess"],
@@ -9,7 +9,7 @@
     "service_worker": "service-worker.js"
   },
   "action": {
-    "default_title": "Mod Header",
+    "default_title": "Headerly",
     "default_popup": "popup.html"
   }
 }

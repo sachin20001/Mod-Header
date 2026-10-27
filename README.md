@@ -1,4 +1,4 @@
-# Mod Header
+# Headerly
 
 A small Chrome Manifest V3 extension for adding or replacing one or more request headers when a request URL contains text you choose. For example, a term like `qa.example.com/api` matches any HTTP or HTTPS request URL that includes that text. You can keep multiple rules, edit them, and toggle them on or off. A badge on the extension icon counts matching requests for the current tab.
 

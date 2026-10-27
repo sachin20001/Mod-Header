@@ -1,10 +1,10 @@
-# Mod Header: repository flow
+# Headerly: repository flow
 
 This document explains how the extension starts, how its files fit together, and what happens when a rule is added or used.
 
 ## What the extension does
 
-Mod Header is a Chrome Manifest V3 extension. You enter text to look for in a request URL and one or more HTTP header name/value pairs. If the request URL contains that text (case-insensitive), Chrome adds or replaces those request headers. Rules can be opened to inspect, edited, disabled, enabled, or deleted, and are saved between browser sessions.
+Headerly is a Chrome Manifest V3 extension. You enter text to look for in a request URL and one or more HTTP header name/value pairs. If the request URL contains that text (case-insensitive), Chrome adds or replaces those request headers. Rules can be opened to inspect, edited, disabled, enabled, or deleted, and are saved between browser sessions.
 
 ## Entry point and file map
 
