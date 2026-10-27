@@ -9,10 +9,13 @@ const emptyState = document.querySelector('#empty-state');
 const tableWrap = document.querySelector('#rules-table-wrap');
 const count = document.querySelector('#rule-count');
 const status = document.querySelector('#status');
+const versionLabel = document.querySelector('#version-label');
 
 let rules = [];
 let editingId = null;
 let statusTimer;
+
+versionLabel.textContent = `v${chrome.runtime.getManifest().version}`;
 
 function showStatus(message, isError = false) {
   status.textContent = message;

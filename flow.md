@@ -85,6 +85,8 @@ When editing, `beginEdit(rule)` copies the rule values into the form and sets `e
 
 ## Enable, disable, and remove flows
 
+The popup header reads the installed version from `chrome.runtime.getManifest().version`, so the displayed version always follows `manifest.json`.
+
 `render()` creates a compact table row for each rule with its ID, URL term, actions, and an initially closed details row:
 
 - **Open** expands the details section to show header names and values; **Close** collapses it.
