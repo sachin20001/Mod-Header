@@ -1,0 +1,84 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Headerly store screenshot source</title>
+  <link rel="stylesheet" href="../../src/popup.css">
+  <style>
+    body { width: 1280px; height: 800px; min-height: 0; overflow: hidden; background: #e8eddf; }
+    #scene { display: grid; grid-template-columns: 1fr 510px; align-items: center; gap: 48px; width: 1280px; height: 800px; padding: 44px 66px; background: radial-gradient(ellipse at 28% 50%, #f7f8ef 0, #e8eddf 64%, #dfe7ce 100%); }
+    .story { max-width: 570px; }
+    .story-brand { display: flex; align-items: center; gap: 12px; margin-bottom: 34px; color: #293a2c; font-size: 14px; font-weight: 800; letter-spacing: 1.4px; }
+    .story-brand img { width: 48px; height: 48px; border-radius: 12px; }
+    .story h1 { max-width: 550px; margin: 0; color: #1e3024; font: 800 54px/1.07 'Manrope', -apple-system, BlinkMacSystemFont, sans-serif; letter-spacing: -2px; }
+    .story-copy { max-width: 470px; margin-top: 20px; color: #667364; font: 500 18px/1.55 'DM Sans', -apple-system, BlinkMacSystemFont, sans-serif; }
+    .steps { display: flex; align-items: center; gap: 10px; margin-top: 36px; }
+    .step { padding: 10px 13px; border: 1px solid #d7dfca; border-radius: 9px; background: #f7f9f2; color: #3c4c38; font: 700 11px 'DM Sans', sans-serif; }
+    .step-arrow { color: #91a76a; font-size: 16px; }
+    .story-note { margin-top: 34px; color: #84907e; font: 600 11px 'DM Sans', sans-serif; letter-spacing: .25px; }
+    .popup-window { width: 480px; padding: 16px; border: 1px solid #dfe4d9; border-radius: 22px; background: #fff; box-shadow: 0 24px 70px #25332626, 0 5px 18px #25332612; }
+    .popup-window .app { width: 440px; min-height: 0; padding: 18px 18px 13px; border: 1px solid #e9ece6; border-radius: 15px; }
+    .popup-window .topbar { margin-bottom: 14px; }
+    .popup-window .rule-form { padding: 13px; }
+    .popup-window .rules-section { margin-top: 15px; }
+    .popup-window .table-scroll { max-height: none; }
+    .popup-window footer { font-size: 8px; }
+  </style>
+</head>
+<body>
+  <main id="scene">
+    <section class="story">
+      <div class="story-brand"><img src="../../assets/icons/headerly-48.png" alt=""> HEADERLY</div>
+      <h1>Request headers, under your control.</h1>
+      <p class="story-copy">Build focused rules for API and QA testing. Match a request URL, set the headers you need, and see when requests match.</p>
+      <div class="steps" aria-label="How Headerly works">
+        <span class="step">Match a URL term</span><span class="step-arrow">→</span>
+        <span class="step">Set headers</span><span class="step-arrow">→</span>
+        <span class="step">See matches</span>
+      </div>
+      <p class="story-note">Multiple headers per rule · Local rule storage · Per-tab match badge</p>
+    </section>
+
+    <section class="popup-window" aria-label="Headerly popup example">
+      <main class="app">
+        <header class="topbar">
+          <img class="brand-mark" src="../../assets/icons/headerly-48.png" alt="">
+          <div><h1>Headerly</h1><p>Shape requests for your test environments.</p></div>
+          <span class="version-label">v1.0.0</span>
+        </header>
+        <form class="rule-form">
+          <label>URL contains</label>
+          <input value="qa.example.com/api" readonly>
+          <p class="hint">Matches request URLs containing this text, on any site. Chrome will ask for HTTP/HTTPS site access.</p>
+          <div class="headers-heading"><label>Request headers</label><button class="add-header-button" type="button">＋ Add header</button></div>
+          <div class="headers-list">
+            <div class="header-row"><input value="X-Environment" readonly><input value="QA" readonly><button class="remove-header-button" type="button">×</button></div>
+            <div class="header-row"><input value="X-Test-Run" readonly><input value="smoke-24" readonly><button class="remove-header-button" type="button">×</button></div>
+          </div>
+          <aside class="data-disclosure">
+            <strong>Where headers go</strong>
+            <p>Header values are sent to the destination website with every matching request. Use sensitive values only with trusted URLs.</p>
+            <label class="consent-label"><input type="checkbox" checked> I understand these headers will be sent to matching websites.</label>
+          </aside>
+          <button class="primary-button" type="button">Add rule <span aria-hidden="true">＋</span></button>
+        </form>
+        <section class="rules-section">
+          <div class="section-heading"><h2>Your rules</h2><span class="count">1</span></div>
+          <div class="table-scroll">
+            <table class="rules-table" aria-label="Configured header rules">
+              <thead><tr><th>ID</th><th>URL contains</th><th>Actions</th></tr></thead>
+              <tbody>
+                <tr class="rule-row"><td class="rule-id-cell">#1</td><td class="rule-pattern">qa.example.com/api</td><td class="rule-actions-cell"><div class="rule-actions"><button class="text-action" type="button">Close</button><button class="text-action" type="button">Edit</button><button class="text-action delete" type="button">Delete</button><button class="toggle" type="button" aria-pressed="true"></button></div></td></tr>
+                <tr class="rule-details-row"><td class="rule-details-cell" colspan="3"><div class="rule-header"><b>X-Environment: </b>QA</div><div class="rule-header"><b>X-Test-Run: </b>smoke-24</div></td></tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+        <p class="status"></p>
+        <footer>A number on the extension icon shows matching requests on this tab.</footer>
+      </main>
+    </section>
+  </main>
+</body>
+</html>

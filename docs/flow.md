@@ -83,6 +83,8 @@ form submit
 
 `validateHeaders()` checks every header name and value, and rejects duplicate names (ignoring case). Chrome may still reject some header names or values due to its own DNR restrictions; those API errors are caught and shown through `showStatus()`.
 
+Before submission, the required consent checkbox discloses that configured header values go to destination websites for matching requests. This confirmation is shown in the popup before rules are stored or applied.
+
 When editing, `beginEdit(rule)` copies the rule values into the form and sets `editingId`. The submit handler finds that existing rule and keeps its IDs and enabled state. `resetForm()` clears the fields and exits edit mode. The Cancel edit button also calls `resetForm()`.
 
 ## Enable, disable, and remove flows

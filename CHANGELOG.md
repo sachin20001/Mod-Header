@@ -7,6 +7,8 @@ Changes are grouped by extension version. Add new work under **Unreleased** firs
 ### Added
 
 - Headerly branded toolbar, extension page, and popup icons.
+- In-popup disclosure and confirmation that configured headers are sent to matching destinations.
+- Chrome Web Store listing copy, privacy-policy draft, screenshot, and promotional tile.
 
 ### Changed
 

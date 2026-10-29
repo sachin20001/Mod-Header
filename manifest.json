@@ -1,13 +1,13 @@
 {
   "manifest_version": 3,
-  "name": "Headerly",
+  "name": "Headerly: HTTP Header Manager",
   "version": "1.0.0",
-  "description": "Add or replace request headers on URLs you choose.",
+  "description": "Set multiple HTTP request headers on matching URLs. Organize rules, switch them on or off, and see matches per tab.",
   "icons": {
     "16": "assets/icons/headerly-16.png",
     "32": "assets/icons/headerly-32.png",
     "48": "assets/icons/headerly-48.png",
-    "128": "assets/icons/headerly-128.png"
+    "128": "assets/icons/headerly-store-128.png"
   },
   "permissions": ["storage", "declarativeNetRequestWithHostAccess"],
   "optional_host_permissions": ["http://*/*", "https://*/*"],

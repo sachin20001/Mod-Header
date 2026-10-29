@@ -28,6 +28,12 @@
         </div>
         <div id="headers-list" class="headers-list"></div>
 
+        <aside class="data-disclosure" aria-label="Header data disclosure">
+          <strong>Where headers go</strong>
+          <p>Header values are sent to the destination website with every matching request. Use sensitive values only with trusted URLs.</p>
+          <label class="consent-label"><input id="data-consent" type="checkbox" required> I understand these headers will be sent to matching websites.</label>
+        </aside>
+
         <button class="primary-button" id="submit-button" type="submit">Add rule <span aria-hidden="true">＋</span></button>
         <button class="cancel-button" id="cancel-edit" type="button" hidden>Cancel edit</button>
       </form>
