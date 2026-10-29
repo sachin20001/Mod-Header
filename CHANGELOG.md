@@ -4,6 +4,14 @@ Changes are grouped by extension version. Add new work under **Unreleased** firs
 
 ## Unreleased
 
+### Added
+
+- Headerly branded toolbar, extension page, and popup icons.
+
+### Changed
+
+- Organized popup code under `src/`, icons under `assets/icons/`, and architecture notes under `docs/`.
+
 ### Planned
 
 - Add future changes here before assigning them to a release.

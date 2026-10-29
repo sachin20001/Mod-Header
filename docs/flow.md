@@ -8,28 +8,30 @@ Headerly is a Chrome Manifest V3 extension. You enter text to look for in a requ
 
 ## Entry point and file map
 
-Chrome reads [`manifest.json`](manifest.json) first when the extension is loaded. Its `action.default_popup` points to [`popup.html`](popup.html), which is the user interface entry point. The popup loads [`popup.css`](popup.css) for presentation and [`popup.js`](popup.js) for behavior.
+Chrome reads [`manifest.json`](../manifest.json) first when the extension is loaded. Its `action.default_popup` points to [`src/popup.html`](../src/popup.html), which is the user interface entry point. The popup loads `src/popup.css` for presentation and `src/popup.js` for behavior.
 
-The popup calls Chrome's extension APIs directly. [`service-worker.js`](service-worker.js) enables a per-tab match counter in Chrome's toolbar badge. The browser's Declarative Net Request engine applies the registered rules to network traffic after the popup closes.
+The popup calls Chrome's extension APIs directly. [`src/service-worker.js`](../src/service-worker.js) enables a per-tab match counter in Chrome's toolbar badge. The browser's Declarative Net Request engine applies the registered rules to network traffic after the popup closes.
 
 | File | Responsibility |
 | --- | --- |
-| [`manifest.json`](manifest.json) | Declares MV3, popup, storage and DNR permissions, and optional HTTP/HTTPS host access. |
-| [`service-worker.js`](service-worker.js) | Enables the DNR action count as a toolbar badge on install, startup, and worker load. |
-| [`popup.html`](popup.html) | Defines the rule form, dynamic header rows, empty state, rules table, status message, and script/style links. |
-| [`popup.css`](popup.css) | Styles the popup and rule cards. |
-| [`popup.js`](popup.js) | Validates input, requests host access, stores rules, updates DNR rules, and renders the UI. |
-| [`README.md`](README.md) | Quick install and user-facing behavior notes. |
-| [`flow.md`](flow.md) | Architecture and call-flow guide (this document). |
+| [`manifest.json`](../manifest.json) | Declares MV3, popup, storage and DNR permissions, and optional HTTP/HTTPS host access. |
+| [`assets/icons/`](../assets/icons/) | Contains the Headerly vector source and PNG icon sizes registered with Chrome. |
+| [`src/service-worker.js`](../src/service-worker.js) | Enables the DNR action count as a toolbar badge on install, startup, and worker load. |
+| [`src/popup.html`](../src/popup.html) | Defines the rule form, dynamic header rows, empty state, rules table, status message, and script/style links. |
+| [`src/popup.css`](../src/popup.css) | Styles the popup and rule table. |
+| [`src/popup.js`](../src/popup.js) | Validates input, requests host access, stores rules, updates DNR rules, and renders the UI. |
+| [`README.md`](../README.md) | Quick install and user-facing behavior notes. |
+| [`CHANGELOG.md`](../CHANGELOG.md) | Changes grouped by release version. |
+| [`docs/flow.md`](flow.md) | Architecture and call-flow guide (this document). |
 
 ## Startup flow
 
 ```text
-Chrome loads manifest.json
+Chrome loads manifest.json from the repository root
         |
-        +-- toolbar click opens popup.html
+        +-- toolbar click opens src/popup.html
                     |
-                    +-- loads popup.css and popup.js
+                    +-- loads src/popup.css and src/popup.js
                                 |
                                 +-- initialize()
                                      |-- chrome.storage.local.get('rules')
@@ -37,7 +39,7 @@ Chrome loads manifest.json
                                      |-- render()
 ```
 
-`initialize()` runs once at the bottom of `popup.js`. It loads the saved rules (or uses an empty list), synchronizes Chrome's current dynamic rules with the saved enabled rules, then draws the list. If startup fails, `showStatus()` displays the error.
+`initialize()` runs once at the bottom of `src/popup.js`. It loads the saved rules (or uses an empty list), synchronizes Chrome's current dynamic rules with the saved enabled rules, then draws the list. If startup fails, `showStatus()` displays the error.
 
 ## Rule data
 
@@ -85,7 +87,7 @@ When editing, `beginEdit(rule)` copies the rule values into the form and sets `e
 
 ## Enable, disable, and remove flows
 
-The popup header reads the installed version from `chrome.runtime.getManifest().version`, so the displayed version always follows `manifest.json`.
+The popup header reads the installed version from `chrome.runtime.getManifest().version`, so the displayed version always follows `../manifest.json`.
 
 `render()` creates a compact table row for each rule with its ID, URL term, actions, and an initially closed details row:
 
@@ -98,7 +100,7 @@ Every successful change goes through `persist()`, so the stored rule list and Ch
 
 ## How request headers are changed
 
-The browser does not call `popup.js` for each network request. Instead, `syncDnr()` converts each enabled saved rule using `createDnrRule()` and installs the result with `chrome.declarativeNetRequest.updateDynamicRules()`.
+The browser does not call `src/popup.js` for each network request. Instead, `syncDnr()` converts each enabled saved rule using `createDnrRule()` and installs the result with `chrome.declarativeNetRequest.updateDynamicRules()`.
 
 Each Chrome rule represents a URL term and all headers configured for that term. It uses:
 
@@ -110,7 +112,7 @@ Chrome then applies matching rules to outgoing requests, whether they came from 
 
 ## Match transparency
 
-`service-worker.js` calls `chrome.declarativeNetRequest.setExtensionActionOptions({ displayActionCountAsBadgeText: true })`. Chrome displays a per-tab count on the extension's toolbar icon as requests match the rules. The popup explains what the badge means. This provides a quiet signal without opening a notification for every request, which could be noisy on pages that make many API calls. The DNR matched-rule debug event is restricted to unpacked extensions, so it is not used for the normal user-facing indicator.
+`src/service-worker.js` calls `chrome.declarativeNetRequest.setExtensionActionOptions({ displayActionCountAsBadgeText: true })`. Chrome displays a per-tab count on the extension's toolbar icon as requests match the rules. The popup explains what the badge means. This provides a quiet signal without opening a notification for every request, which could be noisy on pages that make many API calls. The DNR matched-rule debug event is restricted to unpacked extensions, so it is not used for the normal user-facing indicator.
 
 ## Permissions
 
@@ -118,10 +120,11 @@ The manifest requests `storage` and `declarativeNetRequestWithHostAccess`. HTTP/
 
 ## Where to change things
 
-- Change labels or form layout in `popup.html`.
-- Change appearance in `popup.css`.
-- Change validation, persistence, or call behavior in `popup.js`.
+- Change labels or form layout in `src/popup.html`.
+- Change appearance in `src/popup.css`.
+- Change validation, persistence, or call behavior in `src/popup.js`.
 - Change Chrome API permissions or popup registration in `manifest.json`.
-- Update setup instructions in `README.md`.
+- Chrome uses the checked-in PNG files in `assets/icons/`; `assets/icons/headerly.svg` is the editable vector source.
+- Update setup instructions in `README.md` and release history in `CHANGELOG.md`.
 
 After changing `manifest.json` or extension code, reload the unpacked extension from `chrome://extensions` to load the changes.

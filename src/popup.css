@@ -11,7 +11,7 @@ body { width: 440px; min-height: 480px; margin: 0; background: #f7f8f5; }
 .app { padding: 22px 22px 16px; }
 .topbar { display: flex; align-items: center; gap: 12px; margin-bottom: 22px; }
 .version-label { margin-left: auto; padding: 4px 7px; border: 1px solid #e4e9dc; border-radius: 99px; color: #74806f; font-size: 9px; font-weight: 600; }
-.brand-mark { display: grid; place-items: center; width: 38px; height: 38px; border-radius: 12px; background: #d8f36b; color: #26330b; font-size: 23px; font-weight: 700; }
+.brand-mark { display: block; width: 38px; height: 38px; border-radius: 10px; }
 h1, h2, p { margin: 0; }
 h1 { font: 800 18px 'Manrope', sans-serif; letter-spacing: -.45px; }
 .topbar p { margin-top: 2px; color: #78817b; font-size: 11px; }
