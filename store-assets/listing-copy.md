@@ -38,7 +38,7 @@ The request URL can differ from the page shown in the address bar; an app may ca
 ## Images
 
 - **Store icon (required):** `../assets/icons/headerly-store-128.png` (declared in the manifest and included in the ZIP)
-- **Screenshot (required):** `screenshots/headerly-rules.png`
+- **Screenshot (required):** `screenshots/headerly-rules.png` (1280×800) or `screenshots/headerly-rules-640x400.png` (640×400)
 - **Small promo tile (optional):** `small-promo-tile.png`
 - **Marquee tile (optional):** Not prepared; upload only if you decide you want one.
 
@@ -73,7 +73,7 @@ Chrome's listing fields, screenshot/icon requirements, and privacy disclosures a
 1. Publish the privacy policy at a public HTTPS URL and fill in that field.
 2. Add a support URL if you have one.
 3. Confirm the dashboard's data categories and certifications match the extension's behavior and the published policy.
-4. Upload `screenshots/headerly-rules.png`; the store icon is included in the ZIP. The small promo tile is optional.
+4. In **Screenshots**, upload either `screenshots/headerly-rules.png` or `screenshots/headerly-rules-640x400.png`. Upload `small-promo-tile.png` only in the separate promotional image field. The store icon is included in the ZIP.
 5. Upload a ZIP with `manifest.json` at its root (the prepared package is `headerly-1.0.0.zip` at the repository root).
 6. If version `1.0.0` has already been submitted for this store item, increase `version` in `manifest.json` and rebuild the ZIP before uploading; Chrome requires each uploaded package to have a higher version.
 
