@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
   "name": "Headerly: HTTP Header Manager",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Set multiple HTTP request headers on matching URLs. Organize rules, switch them on or off, and see matches per tab.",
   "icons": {
     "16": "assets/icons/headerly-16.png",

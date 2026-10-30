@@ -8,7 +8,7 @@ A small Chrome Manifest V3 extension for adding or replacing one or more request
 2. Turn on **Developer mode**.
 3. Choose **Load unpacked** and select this project folder.
 4. Open the extension popup, enter a URL term and header, then choose **Add rule**.
-5. Grant Chrome's HTTP and HTTPS site access prompt so the term can be checked on any website.
+5. Grant Chrome's HTTP and HTTPS site access prompt so the term can be checked on any website. Headerly saves the rule after access is granted, even if Chrome closes the popup while showing the prompt.
 
 Rules are saved in extension storage and installed as dynamic Declarative Net Request rules, so they persist across browser restarts. Removing a rule removes its active network rule. Site access can be revoked at any time from Chrome's extension settings.
 

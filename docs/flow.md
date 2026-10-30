@@ -10,13 +10,13 @@ Headerly is a Chrome Manifest V3 extension. You enter text to look for in a requ
 
 Chrome reads [`manifest.json`](../manifest.json) first when the extension is loaded. Its `action.default_popup` points to [`src/popup.html`](../src/popup.html), which is the user interface entry point. The popup loads `src/popup.css` for presentation and `src/popup.js` for behavior.
 
-The popup calls Chrome's extension APIs directly. [`src/service-worker.js`](../src/service-worker.js) enables a per-tab match counter in Chrome's toolbar badge. The browser's Declarative Net Request engine applies the registered rules to network traffic after the popup closes.
+The popup calls Chrome's extension APIs directly. [`src/service-worker.js`](../src/service-worker.js) enables a per-tab match counter in Chrome's toolbar badge and completes a pending rule save if Chrome closes the popup while asking for site access. The browser's Declarative Net Request engine applies the registered rules to network traffic after the popup closes.
 
 | File | Responsibility |
 | --- | --- |
 | [`manifest.json`](../manifest.json) | Declares MV3, popup, storage and DNR permissions, and optional HTTP/HTTPS host access. |
 | [`assets/icons/`](../assets/icons/) | Contains the Headerly vector source and PNG icon sizes registered with Chrome. |
-| [`src/service-worker.js`](../src/service-worker.js) | Enables the DNR action count as a toolbar badge on install, startup, and worker load. |
+| [`src/service-worker.js`](../src/service-worker.js) | Enables the DNR action count as a toolbar badge and commits a pending rule after site access is granted. |
 | [`src/popup.html`](../src/popup.html) | Defines the rule form, dynamic header rows, empty state, rules table, status message, and script/style links. |
 | [`src/popup.css`](../src/popup.css) | Styles the popup and rule table. |
 | [`src/popup.js`](../src/popup.js) | Validates input, requests host access, stores rules, updates DNR rules, and renders the UI. |
@@ -68,9 +68,13 @@ The form's `submit` listener owns both creating and saving a rule. It follows th
 form submit
   -> validateContainsTerm(urlContains)
   -> validateHeaders(headers[])
-  -> check/request HTTP + HTTPS host access
   -> build newRule (reuse IDs when editing)
-  -> persist(nextRules)
+  -> if host access is missing:
+       -> save { pendingRuleSave } in chrome.storage.local
+       -> request HTTP + HTTPS host access
+       -> service worker commits the pending rule on permissions.onAdded
+       -> popup also asks the service worker to commit when the prompt returns
+  -> otherwise persist(nextRules)
        -> syncDnr(nextRules)
        -> chrome.storage.local.set({ rules: nextRules })
        -> update in-memory rules
@@ -83,7 +87,7 @@ form submit
 
 `validateHeaders()` checks every header name and value, and rejects duplicate names (ignoring case). Chrome may still reject some header names or values due to its own DNR restrictions; those API errors are caught and shown through `showStatus()`.
 
-Before submission, the required consent checkbox discloses that configured header values go to destination websites for matching requests. This confirmation is shown in the popup before rules are stored or applied.
+Before submission, the required consent checkbox discloses that configured header values go to destination websites for matching requests. The checkbox is separate from Chrome's site access prompt. When access is missing, Headerly writes the form data as a pending rule before requesting access, so the service worker can finish saving it even if the permission prompt closes the popup. If access is denied, the form is restored the next time the popup opens.
 
 When editing, `beginEdit(rule)` copies the rule values into the form and sets `editingId`. The submit handler finds that existing rule and keeps its IDs and enabled state. `resetForm()` clears the fields and exits edit mode. The Cancel edit button also calls `resetForm()`.
 

@@ -86,6 +86,10 @@ async function persist(nextRules) {
   render();
 }
 
+async function savePendingRule(rule, pendingId) {
+  await chrome.storage.local.set({ pendingRuleSave: { id: pendingId, rule, editingId } });
+}
+
 function addText(parent, tag, className, text) {
   const node = document.createElement(tag);
   if (className) node.className = className;
@@ -228,10 +232,6 @@ form.addEventListener('submit', async event => {
   try {
     validateContainsTerm(urlContains);
     validateHeaders(headers);
-    const hostOrigins = ['http://*/*', 'https://*/*'];
-    const granted = await chrome.permissions.request({ origins: hostOrigins });
-    if (!granted) throw new Error('Grant HTTP and HTTPS site access to apply this rule on any website.');
-
     const existing = rules.find(rule => rule.dnrId === editingId);
     const dnrId = existing?.dnrId ?? Math.max(0, ...rules.map(rule => rule.dnrId)) + 1;
     const newRule = {
@@ -241,10 +241,33 @@ form.addEventListener('submit', async event => {
       headers,
       enabled: existing?.enabled ?? true
     };
-    const nextRules = existing
-      ? rules.map(rule => rule.dnrId === editingId ? newRule : rule)
-      : [...rules, newRule];
-    await persist(nextRules);
+    const hasHostAccess = await chrome.permissions.contains({ origins: ['http://*/*', 'https://*/*'] });
+    if (!hasHostAccess) {
+      const pendingId = crypto.randomUUID();
+      await savePendingRule(newRule, pendingId);
+      const granted = await chrome.permissions.request({ origins: ['http://*/*', 'https://*/*'] });
+      if (!granted) {
+        throw new Error('Site access was not granted. Your rule details are saved here; choose Add rule to try again.');
+      }
+
+      const result = await chrome.runtime.sendMessage({ type: 'COMMIT_PENDING_RULE', pendingId });
+      if (result?.ok) {
+        rules = result.rules;
+      } else {
+        const saved = await chrome.storage.local.get('rules');
+        const wasSaved = Array.isArray(saved.rules) && saved.rules.some(rule =>
+          rule.dnrId === dnrId && rule.urlContains === urlContains && JSON.stringify(rule.headers) === JSON.stringify(headers)
+        );
+        if (!wasSaved) throw new Error(result?.error || 'Permission was granted, but the rule could not be saved. Reopen Headerly to retry.');
+        rules = saved.rules;
+      }
+    } else {
+      const nextRules = existing
+        ? rules.map(rule => rule.dnrId === editingId ? newRule : rule)
+        : [...rules, newRule];
+      await persist(nextRules);
+      await chrome.storage.local.remove('pendingRuleSave');
+    }
     resetForm();
     showStatus(existing ? 'Rule updated.' : 'Rule added.');
   } catch (error) {
@@ -268,7 +291,7 @@ async function toggleRule(id) {
 
 async function initialize() {
   try {
-    const saved = await chrome.storage.local.get('rules');
+    const saved = await chrome.storage.local.get(['rules', 'pendingRuleSave']);
     rules = Array.isArray(saved.rules)
       ? saved.rules.map(rule => {
           const migratedHeaders = rule.headers || (rule.headerName ? [{ name: rule.headerName, value: rule.headerValue }] : []);
@@ -277,8 +300,43 @@ async function initialize() {
         })
       : [];
     if (Array.isArray(saved.rules)) await chrome.storage.local.set({ rules });
+    let pending = saved.pendingRuleSave;
+    if (saved.pendingRuleSave) {
+      const hasHostAccess = await chrome.permissions.contains({ origins: ['http://*/*', 'https://*/*'] });
+      if (hasHostAccess) {
+        const result = await chrome.runtime.sendMessage({ type: 'COMMIT_PENDING_RULE', pendingId: pending.id });
+        if (result?.ok) {
+          rules = result.rules;
+          pending = null;
+        } else {
+          const latest = await chrome.storage.local.get(['rules', 'pendingRuleSave']);
+          const pendingRuleWasSaved = Array.isArray(latest.rules) && latest.rules.some(rule =>
+            rule.dnrId === pending.rule.dnrId && rule.urlContains === pending.rule.urlContains &&
+            JSON.stringify(rule.headers) === JSON.stringify(pending.rule.headers)
+          );
+          if (pendingRuleWasSaved) {
+            rules = latest.rules;
+            pending = null;
+            await chrome.storage.local.remove('pendingRuleSave');
+          }
+        }
+      }
+    }
     await syncDnr(rules);
     render();
+    if (pending) {
+      editingId = pending.editingId ?? null;
+      containsInput.value = pending.rule.urlContains;
+      headersList.replaceChildren();
+      pending.rule.headers.forEach(addHeaderRow);
+      if (editingId !== null) {
+        submitButton.innerHTML = 'Save changes <span aria-hidden="true">✓</span>';
+        cancelButton.hidden = false;
+      }
+      showStatus('Your rule details were restored. Choose Add rule to retry.');
+    } else if (saved.pendingRuleSave) {
+      showStatus('Rule added.');
+    }
   } catch (error) {
     showStatus(error.message || 'Could not load saved rules.', true);
   }

@@ -74,8 +74,7 @@ Chrome's listing fields, screenshot/icon requirements, and privacy disclosures a
 2. Add a support URL if you have one.
 3. Confirm the dashboard's data categories and certifications match the extension's behavior and the published policy.
 4. In **Screenshots**, upload either `screenshots/headerly-rules.png` or `screenshots/headerly-rules-640x400.png`. Upload `small-promo-tile.png` only in the separate promotional image field. The store icon is included in the ZIP.
-5. Upload a ZIP with `manifest.json` at its root (the prepared package is `headerly-1.0.0.zip` at the repository root).
-6. If version `1.0.0` has already been submitted for this store item, increase `version` in `manifest.json` and rebuild the ZIP before uploading; Chrome requires each uploaded package to have a higher version.
+5. Upload `headerly-1.0.1.zip` with `manifest.json` at its root. Chrome requires each uploaded package to have a higher version than the currently published one.
 
 ## Official references
 

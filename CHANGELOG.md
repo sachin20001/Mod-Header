@@ -18,6 +18,13 @@ Changes are grouped by extension version. Add new work under **Unreleased** firs
 
 - Add future changes here before assigning them to a release.
 
+## 1.0.1 — Permission save fix
+
+### Fixed
+
+- Preserve a rule's details before requesting site access and automatically save/apply the rule after permission is granted, even if Chrome closes the popup during the permission prompt.
+- Restore pending rule details if site access is not granted, so users do not need to re-enter them.
+
 ## 1.0.0 — Initial release
 
 ### Added
